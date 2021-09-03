@@ -83,6 +83,7 @@ function dishIdExists(req, res, next) {
     const { dishId } = req.params
     const foundDish = dishes.find((dish) => dish.id === dishId)
     if (foundDish) {
+        res.locals.dish = foundDish
         next()
     }
     next({
@@ -123,22 +124,20 @@ function create(req, res, next) {
 }
 
 function read(req, res, next) {
-    const { dishId } = req.params
-    const foundDish = dishes.find((dish) => dish.id === dishId)
-    res.json({data: foundDish})
+    const dish = res.locals.dish
+    res.json({data: dish})
 }
 
 function update(req, res, next) {
-    const { dishId } = req.params
-    const foundDish = dishes.find((dish) => dish.id === dishId)
+    const dish = res.locals.dish
     const { data: { name, description, price, image_url } = {} } = req.body
     
-    foundDish.name = name
-    foundDish.description = description
-    foundDish.price = price
-    foundDish.image_url = image_url
+    dish.name = name
+    dish.description = description
+    dish.price = price
+    dish.image_url = image_url
 
-    res.json({ data: foundDish})
+    res.json({ data: dish})
 }
 
 module.exports = {

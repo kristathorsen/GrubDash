@@ -117,6 +117,7 @@ function orderExists(req, res, next) {
     const { orderId } = req.params
     const foundOrder = orders.find((order) => order.id === orderId)
     if (foundOrder){
+        res.locals.order = foundOrder
         next()
     }
     next({
@@ -193,22 +194,20 @@ function create(req, res, next) {
 }
 
 function read(req, res, next) {
-    const { orderId } = req.params
-    const foundOrder = orders.find((order) => order.id === orderId)
-    res.json({ data: foundOrder })
+  const order = res.locals.order
+    res.json({ data: order })
 }
 
 function update(req, res, next) {
-    const { orderId } = req.params
-    const foundOrder = orders.find((order) => order.id === orderId)
+    const order = res.locals.order
     const {data: {deliverTo, mobileNumber, status, dishes} = {} } = req.body
 
-    foundOrder.deliverTo = deliverTo
-    foundOrder.mobileNumber = mobileNumber
-    foundOrder.status = status
-    foundOrder. dishes = dishes
+    order.deliverTo = deliverTo
+    order.mobileNumber = mobileNumber
+    order.status = status
+    order. dishes = dishes
 
-    res.json({data: foundOrder})
+    res.json({data: order})
 }
 
 function destroy(req, res, next) {
