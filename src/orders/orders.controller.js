@@ -35,6 +35,7 @@ function hasMobileNumber(req, res, next) {
 function hasDishes(req, res, next) {
     const { data: {dishes} = {} } = req.body
     if (dishes) {
+        res.locals.dishes = dishes
         next()
     }
     next({
@@ -45,7 +46,7 @@ function hasDishes(req, res, next) {
 
 //checks if dishes is an array
 function dishesIsArray(req, res, next) {
-    const { data: {dishes} = {} } = req.body
+    const dishes = res.locals.dishes
     if (Array.isArray(dishes)){
         next()
     }
@@ -57,7 +58,7 @@ function dishesIsArray(req, res, next) {
 
 //checks if dishes array is empty
 function dishesArrayIsNotEmpty(req, res, next) {
-    const { data: {dishes} = {} } = req.body
+    const dishes = res.locals.dishes
     if (dishes.length > 0){
         next()
     }
@@ -69,7 +70,7 @@ function dishesArrayIsNotEmpty(req, res, next) {
 
 //checks if any dishes have a missing quantity
 function allDishesHaveQuantities(req, res, next) {
-    const { data: {dishes} = {} } = req.body
+    const dishes = res.locals.dishes
     dishes.forEach((dish) => {
         if (!dish.quantity){
             const index = dishes.indexOf(dish)
@@ -84,7 +85,7 @@ function allDishesHaveQuantities(req, res, next) {
 
 //checks if any dishes have a quantity of zero or less
 function allQuantitiesGreaterThanZero(req, res, next) {
-    const { data: {dishes} = {} } = req.body
+    const dishes = res.locals.dishes
     dishes.forEach((dish) => {
         if (dish.quantity <= 0){
             const index = dishes.indexOf(dish)
@@ -99,7 +100,7 @@ function allQuantitiesGreaterThanZero(req, res, next) {
 
 //check if any dishes have a quantity that is not an integer
 function allQuantitiesAreIntegers(req, res, next) {
-    const { data: {dishes} = {} } = req.body
+    const dishes = res.locals.dishes
     dishes.forEach((dish) => {
         if (typeof dish.quantity !== "number") {
             const index = dishes.indexOf(dish)

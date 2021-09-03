@@ -34,6 +34,7 @@ function hasDescriptionProperty(req, res, next) {
 function hasPriceProperty(req, res, next) {
     const { data: {price} = {} } = req.body
     if (price){
+        res.locals.price = price
         next()
     }
     next({
@@ -44,7 +45,7 @@ function hasPriceProperty(req, res, next) {
 
 //check if price is greater than zero
 function priceIsGreaterThanZero (req, res, next) {
-    const { data: {price} = {} } = req.body
+    const price = res.locals.price
     if (price > 0){
         next()
     }
@@ -56,7 +57,7 @@ function priceIsGreaterThanZero (req, res, next) {
 
 //check if price is an integer
 function priceIsInteger(req, res, next) {
-    const { data: {price} = {} } = req.body
+    const price = res.locals.price
     if (Number.isInteger(price)){
         next()
     }
