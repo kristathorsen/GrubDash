@@ -154,19 +154,20 @@ function hasStatus(req, res, next) {
 //chekc if the status is delivered
 function statusNotDelivered(req, res, next) {
     const { data: { status } = {} } = req.body
-    if (status === "invalid"){
-        next({
-            status: 400,
-            message:  "Orders must have a status of pending, preparing, out-for-delivery, delivered"
-        })
+    const validStatuses = ["pending", "preparing", "out-for-delivery", "delivered"]
+    if (validStatuses.includes(status)){
+        next()
     }
-    next()
+    next({
+        status: 400,
+        message:  "Orders must have a status of pending, preparing, out-for-delivery, delivered"
+    })
 }
 
 //check if status is pending
 function statusIsPending(req, res, next) {
-    const { data: {status} = {} } = req.body
-    if (status === "pending") {
+    const order = res.locals.order
+    if (order.status === "pending") {
         next()
     }
     next({

@@ -14,7 +14,7 @@ function hasNameProperty(req, res, next) {
     }
     next({
         status: 400,
-        message: "Dish mush include a name"
+        message: "Dish must include a name"
     })
 }
 
